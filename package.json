@@ -1,0 +1,26 @@
+{
+  "name": "nytreactscrub",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexandersuglio/NYTReactScrub.git"
+  },
+  "author": "alexSuglio",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alexandersuglio/NYTReactScrub/issues"
+  },
+  "homepage": "https://github.com/alexandersuglio/NYTReactScrub#readme",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.1",
+    "express": "^4.15.3",
+    "mongoose": "^4.11.0",
+    "request": "^2.81.0"
+  }
+}
