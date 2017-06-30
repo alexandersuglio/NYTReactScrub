@@ -6,24 +6,47 @@ var request = require('request');
 const cheerio = require('cheerio');
 
 var url = "https://www.nytimes.com/";
+// var url = "http://www.nytimes.com/pages/todayspaper/index.html?action=Click&module=HPMiniNav&region=TopBar&WT.nav=page&contentCollection=TodaysPaper&pgtype=Homepage";
+// var url = "https://mobile.nytimes.com/2017/06/30/briefing/mika-brzezinski-germany-pope-francis.html";
 
 // app.get('/scrape', function(req, res) {
 
+// var url = 'https://news.ycombinator.com';
 
-
+// request('https://news.ycombinator.com', function (error, response, html) {
+//   if (!error && response.statusCode == 200) {
+//     console.log(html);
+//   }
+// });
     request(url, function(err, res, body) {
         var $ = cheerio.load(body);
-        var title = $('.summary');
-        var titleText = title.text();
-        console.log(titleText);
+
+        $('h6').each(function(i, element){
+
+
+var a = $(this).prev();
+var title = a.text();
+console.log(title);
+
+
+
+
+        	
+        })
+
+
+
+        // var title = $('.summary');
+        // var titleText = title.text();
+        // console.log("Article body: " + titleText);
     });
 
+// // });
+
+
+// app.listen(port, function() {
+//     console.log("app connected and firing!");
 // });
-
-
-app.listen(port, function() {
-    console.log("app connected and firing!");
-});
 
 // app.get("/", function(req, res) {
 //     res.sendFile(__dirname + "/index.html");
@@ -63,3 +86,21 @@ app.listen(port, function() {
 // db.on('connect', function(){
 // 	console.log('Database connected!');
 // });
+
+
+
+
+
+
+// example online
+
+ //    $('span.comhead').each(function(i, element){
+
+ // var a = $(this).prev();
+ //      var rank = a.parent().parent().text();
+ //      var title = a.text();
+ //      var url = a.attr('href');
+ //      var subtext = a.parent().parent().next().children('.subtext').children();
+ //      var points = $(subtext).eq(0).text();
+ //      var username = $(subtext).eq(1).text();
+ //      var comments = $(subtext).eq(2).text();
