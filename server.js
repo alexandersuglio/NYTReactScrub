@@ -1,11 +1,152 @@
-var mongoose = require("mongoose");
+// var mongoose = require("mongoose");
 var express = require('express');
 var app = express();
 var port = process.env.port || 3000;
 var request = require('request');
 const cheerio = require('cheerio');
+var fs = require('fs');
 
-var url = "https://www.nytimes.com/";
+// var bodyParser = require('body-parser');
+// app.use(bodyParser.json());
+
+app.get('/scrape', function(req, res){
+    
+    url = 'http://www.imdb.com/title/tt1229340/';
+
+    request(url, function(error, response, html){
+        if(!error){
+            var $ = cheerio.load(html);
+
+            var title, release, rating;
+            var json = { title : "", release : "", rating : ""};
+
+            $('.header').filter(function(){
+                var data = $(this);
+                title = data.children().first().text();
+            
+                // We will repeat the same process as above.  This time we notice that the release is located within the last element.
+                // Writing this code will move us to the exact location of the release year.
+
+                release = data.children().last().children().text();
+
+                json.title = title;
+
+                // Once again, once we have the data extract it we'll save it to our json object
+
+                json.release = release;
+            })
+        }
+//     })
+// })
+
+fs.writeFile('output.json', JSON.stringify(json, null, 4), function(err){
+
+    console.log('File successfully written! - Check your project directory for the output.json file');
+
+})
+
+res.send('Check your console!')
+
+    }) ;
+})
+
+
+app.listen(port, function() {
+    console.log("app connected and firing!");
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// // var url =  "http://nytimes.com/";
+// var url = "https://www.indeed.com/cmp/Tellus-LLC/jobs/Aws-Devop-Engineer-d41cf7c32709cfcc?sjdu=QwrRXKrqZ3CNX5W-O9jEvSpBJrjoIwIR5kW7hZB_bomeF8IoQHfuMFrPhmSyPljD9sGoPPrzetXUupd-gcuhuw";
+
+// request(url, function(error, resp, body) {
+//     if (!error) {
+//         var $ = cheerio.load(body);
+
+// // var test = $('div.story');
+// // var testText = test.text();
+// // var idk = testText[0];
+// // console.log(idk);
+// // console.log(testText);
+
+// var test = $('.jobtitle');
+// var testText = test.text();
+// console.log("Title: " + testText);
+//     };
+
+// });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// var url = "https://www.nytimes.com/";
 // var url = "http://www.nytimes.com/pages/todayspaper/index.html?action=Click&module=HPMiniNav&region=TopBar&WT.nav=page&contentCollection=TodaysPaper&pgtype=Homepage";
 // var url = "https://mobile.nytimes.com/2017/06/30/briefing/mika-brzezinski-germany-pope-francis.html";
 
@@ -18,35 +159,32 @@ var url = "https://www.nytimes.com/";
 //     console.log(html);
 //   }
 // });
-    request(url, function(err, res, body) {
-        var $ = cheerio.load(body);
+//     request(url, function(err, res, body) {
+//         var $ = cheerio.load(body);
 
-        $('h6').each(function(i, element){
-
-
-var a = $(this).prev();
-var title = a.text();
-console.log(title);
+//         $('h6').each(function(i, element){
 
 
-
-
-        	
-        })
+// var a = $(this).prev();
+// var title = a.text();
+// console.log(title);
 
 
 
-        // var title = $('.summary');
-        // var titleText = title.text();
-        // console.log("Article body: " + titleText);
-    });
+
+
+//         })
+
+
+
+//         // var title = $('.summary');
+//         // var titleText = title.text();
+//         // console.log("Article body: " + titleText);
+//     });
 
 // // });
 
 
-// app.listen(port, function() {
-//     console.log("app connected and firing!");
-// });
 
 // app.get("/", function(req, res) {
 //     res.sendFile(__dirname + "/index.html");
@@ -94,13 +232,13 @@ console.log(title);
 
 // example online
 
- //    $('span.comhead').each(function(i, element){
+//    $('span.comhead').each(function(i, element){
 
- // var a = $(this).prev();
- //      var rank = a.parent().parent().text();
- //      var title = a.text();
- //      var url = a.attr('href');
- //      var subtext = a.parent().parent().next().children('.subtext').children();
- //      var points = $(subtext).eq(0).text();
- //      var username = $(subtext).eq(1).text();
- //      var comments = $(subtext).eq(2).text();
+// var a = $(this).prev();
+//      var rank = a.parent().parent().text();
+//      var title = a.text();
+//      var url = a.attr('href');
+//      var subtext = a.parent().parent().next().children('.subtext').children();
+//      var points = $(subtext).eq(0).text();
+//      var username = $(subtext).eq(1).text();
+//      var comments = $(subtext).eq(2).text();
