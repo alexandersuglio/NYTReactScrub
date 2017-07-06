@@ -9,19 +9,81 @@ var fs = require('fs');
 // var bodyParser = require('body-parser');
 // app.use(bodyParser.json());
 
-url = 'https://newyorktimes.com/';
-
+// url = 'https://newyorktimes.com/';
+url ="https://www.nytimes.com/section/politics?WT.nav=page&action=click&contentCollection=Politics&module=HPMiniNav&pgtype=Homepage&region=TopBar";
 request(url, function(error, response, html) {
     if (!error) {
         var $ = cheerio.load(html);
 
-$('p.summary').each(function(){
 
-    console.log("Title: " + $(this).text());
-})
+var base = $('div.story-body');
+var titleFilter = base.find('h2 > a');
+var titleText = titleFilter.text();
+
+
+var authorFilter = base.find('p > span');
+var authorText = authorFilter.text();
+// console.log(authorText);
+
+    var summaryFilter = base.find('p.summary');
+    var summaryText = summaryFilter.text();
+
+    console.log(summaryText);
+    // console.log(titleText);
 
 
 
+
+
+
+
+
+
+
+
+// var article = {title:titleText};
+// console.log(article);
+// var titleFilter = title.find('h2 > a').each(function(){
+// var titleText = $(this).text();
+
+
+
+
+
+// article.title = titleText;
+// console.log( article.title);
+
+
+// });
+
+
+// var idk3 = idk2.each(function(){
+
+
+
+
+
+
+// console.log(idk3);
+
+
+// var idk4 = $(this).text();
+
+// console.log("title: " + idk4);
+
+// });
+
+
+
+
+// $('p.summary').each(function(){
+
+//     console.log("Headline: " + $(this).text());
+// })
+
+// var idk = $("h2.story-heading");
+// var idk2 = idk.text();
+// console.log(idk2);
         // console.log(html);
         // var idk = $('p.summary');
         // var idkText = idk.text();
