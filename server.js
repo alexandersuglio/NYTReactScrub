@@ -9,47 +9,43 @@ var fs = require('fs');
 // var bodyParser = require('body-parser');
 // app.use(bodyParser.json());
 
-app.get('/scrape', function(req, res){
-    
-    url = 'http://www.imdb.com/title/tt1229340/';
+url = 'https://newyorktimes.com/';
 
-    request(url, function(error, response, html){
-        if(!error){
-            var $ = cheerio.load(html);
+request(url, function(error, response, html) {
+    if (!error) {
+        var $ = cheerio.load(html);
 
-            var title, release, rating;
-            var json = { title : "", release : "", rating : ""};
+$('p.summary').each(function(){
 
-            $('.header').filter(function(){
-                var data = $(this);
-                title = data.children().first().text();
-            
-                // We will repeat the same process as above.  This time we notice that the release is located within the last element.
-                // Writing this code will move us to the exact location of the release year.
-
-                release = data.children().last().children().text();
-
-                json.title = title;
-
-                // Once again, once we have the data extract it we'll save it to our json object
-
-                json.release = release;
-            })
-        }
-//     })
-// })
-
-fs.writeFile('output.json', JSON.stringify(json, null, 4), function(err){
-
-    console.log('File successfully written! - Check your project directory for the output.json file');
-
+    console.log("Title: " + $(this).text());
 })
 
-res.send('Check your console!')
 
-    }) ;
-})
 
+        // console.log(html);
+        // var idk = $('p.summary');
+        // var idkText = idk.text();
+        // console.log(idkText);
+
+        // var ruby = $('p.summary').eq(2);
+        // var rubyText = ruby.text();
+        // console.log(rubyText);
+
+
+
+
+
+
+//  var Article = $('.headline');
+// var ArticleText = Article.text();
+// console.log(ArticleText);
+        // var story = $('.story');
+        // var storyText = story.text();
+        // console.log(storyText);
+
+        // json.story = story;
+    };
+});
 
 app.listen(port, function() {
     console.log("app connected and firing!");
@@ -70,6 +66,36 @@ app.listen(port, function() {
 
 
 
+
+//             var title, release, rating;
+//             var json = { title : "", release : "", rating : ""};
+
+//             $('.header').filter(function(){
+//                 var data = $(this);
+//                 title = data.children().first().text();
+
+//                 // We will repeat the same process as above.  This time we notice that the release is located within the last element.
+//                 // Writing this code will move us to the exact location of the release year.
+
+//                 release = data.children().last().children().text();
+
+//                 json.title = title;
+
+//                 // Once again, once we have the data extract it we'll save it to our json object
+
+//                 json.release = release;
+//             })
+//         }
+// //     })
+// // })
+
+// fs.writeFile('output.json', JSON.stringify(json, null, 4), function(err){
+
+//     console.log('File successfully written! - Check your project directory for the output.json file');
+
+// })
+
+// res.send('Check your console!')
 
 
 
@@ -199,17 +225,17 @@ app.listen(port, function() {
 // var db = mongoose.connection;
 
 // db.on('error', function(err){
-// 	console.log("database connection error has occured" + err);
+//  console.log("database connection error has occured" + err);
 // });
 
 // db.on('openUri()', function(){
-// 	console.log("database connection successful!");
+//  console.log("database connection successful!");
 // });
 
 
 
 // if (process.env.MONGODB_URI){
-// 	var db = mongoose.connect(MONGODB_URI);
+//  var db = mongoose.connect(MONGODB_URI);
 // }
 // else {
 
@@ -218,11 +244,11 @@ app.listen(port, function() {
 // }
 
 // db.on('error', function(err){
-// 	console.log('Database connection error: ' + err);
+//  console.log('Database connection error: ' + err);
 // });
 
 // db.on('connect', function(){
-// 	console.log('Database connected!');
+//  console.log('Database connected!');
 // });
 
 
