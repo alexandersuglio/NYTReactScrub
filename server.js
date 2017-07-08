@@ -1,4 +1,4 @@
-// var mongoose = require("mongoose");
+var mongoose = require("mongoose");
 var express = require('express');
 var app = express();
 var port = process.env.port || 3000;
@@ -6,32 +6,81 @@ var request = require('request');
 const cheerio = require('cheerio');
 var fs = require('fs');
 
-// var bodyParser = require('body-parser');
-// app.use(bodyParser.json());
+
 
 // url = 'https://newyorktimes.com/';
-url ="https://www.nytimes.com/section/politics?WT.nav=page&action=click&contentCollection=Politics&module=HPMiniNav&pgtype=Homepage&region=TopBar";
+url = "https://www.nytimes.com/section/politics?WT.nav=page&action=click&contentCollection=Politics&module=HPMiniNav&pgtype=Homepage&region=TopBar";
 request(url, function(error, response, html) {
     if (!error) {
         var $ = cheerio.load(html);
 
+        /// Gets the div with class 'story-body'
+        var base = $('.highlights .story-body');
+        var articles = [];
 
-var base = $('div.story-body');
-var titleFilter = base.find('h2 > a');
-var titleText = titleFilter.text();
+        for (var j=0; j < base.length; ++j) {
+            // console.log(j);
+            articles.push({
+                title: '',
+                author: '',
+                summary: '',
+            });
+        }
+
+        // create for loop that is lenght of the base
+        // within loop add empty objects to articles array
+        // push({
+        //     title: '',
+        //     author: '',
+        //     summary: '',
+        // })
+        // 
+        // then 
+
+        /// Scrape Article Title ///
+        var titleFilter = base.find('h2 > a');
+        titleFilter.each(function(i) {
+            articles[i].title = $(this).text();
+
+        });
+
+        /// Scrape Article Author
+        // var authorFilter = base.find('p > span').filter(".author");
+        var authorFilter = base.find('.byline > .author');
+
+        authorFilter.each(function(i) {
+            articles[i].author = $(this).text();
+        });
 
 
-var authorFilter = base.find('p > span');
-var authorText = authorFilter.text();
-// console.log(authorText);
+        /// Scrape Article Summary
+        var summaryFilter = base.find('p.summary');
 
-    var summaryFilter = base.find('p.summary');
-    var summaryText = summaryFilter.text();
+        summaryFilter.each(function(i) {
+            articles[i].summary = $(this).text();
+        });
 
-    console.log(summaryText);
-    // console.log(titleText);
+    };
+
+    console.log(articles[1].author);
+});
+
+app.listen(port, function() {
+    console.log("app connected and firing!");
+});
 
 
+
+
+
+
+
+
+
+
+// var article = { title: titleText, author: authorText, summary: summaryText};
+
+// console.log( article.title);
 
 
 
@@ -84,14 +133,14 @@ var authorText = authorFilter.text();
 // var idk = $("h2.story-heading");
 // var idk2 = idk.text();
 // console.log(idk2);
-        // console.log(html);
-        // var idk = $('p.summary');
-        // var idkText = idk.text();
-        // console.log(idkText);
+// console.log(html);
+// var idk = $('p.summary');
+// var idkText = idk.text();
+// console.log(idkText);
 
-        // var ruby = $('p.summary').eq(2);
-        // var rubyText = ruby.text();
-        // console.log(rubyText);
+// var ruby = $('p.summary').eq(2);
+// var rubyText = ruby.text();
+// console.log(rubyText);
 
 
 
@@ -101,17 +150,12 @@ var authorText = authorFilter.text();
 //  var Article = $('.headline');
 // var ArticleText = Article.text();
 // console.log(ArticleText);
-        // var story = $('.story');
-        // var storyText = story.text();
-        // console.log(storyText);
+// var story = $('.story');
+// var storyText = story.text();
+// console.log(storyText);
 
-        // json.story = story;
-    };
-});
+// json.story = story;
 
-app.listen(port, function() {
-    console.log("app connected and firing!");
-});
 
 
 
