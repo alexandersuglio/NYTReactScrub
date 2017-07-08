@@ -7,6 +7,22 @@ const cheerio = require('cheerio');
 var fs = require('fs');
 
 
+mongoose.connect('mongodb://localhost/NYTarticles');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // url = 'https://newyorktimes.com/';
 url = "https://www.nytimes.com/section/politics?WT.nav=page&action=click&contentCollection=Politics&module=HPMiniNav&pgtype=Homepage&region=TopBar";
