@@ -22,8 +22,16 @@
     "cheerio": "^1.0.0-rc.1",
     "express": "^4.15.3",
     "mongoose": "^4.11.0",
-    "react": "^15.6.1",
-    "react-dom": "^15.6.1",
+    "react": "^0.14.3",
+    "react-dom": "^0.14.3",
     "request": "^2.81.0"
+  },
+
+   "devDependencies": {
+    "babel-core": "^6.3.13",
+    "babel-loader": "^6.2.0",
+    "babel-preset-es2015": "^6.3.13",
+    "babel-preset-react": "^6.3.13",
+    "webpack": "^1.13.1"
   }
 }

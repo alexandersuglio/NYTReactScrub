@@ -7,107 +7,123 @@ var path = require('path');
 var request = require('request');
 const cheerio = require('cheerio');
 
+var Article = require('./schema.js');
+
+
 
 mongoose.connect('mongodb://localhost/NYTarticles');
 var db = mongoose.connection;
 
 db.on("error", function(error) {
-  console.log("Mongoose Error: ", error);
+    console.log("Mongoose Error: ", error);
 });
 
 db.once("open", function() {
-  console.log("Mongoose connection successful.");
+    console.log("Mongoose connection successful.");
 });
 
+    app.use(express.static('/public'));
 
-
+//routes
 app.get('/', function(req, res) {
     res.sendFile(path.join(__dirname + '/public/index.html'));
 });
 
+app.get('/scrape', function(req, res) {
 
-// var mymodel = mongoose.model('ModelName', PoliticsNYT);
+    url = "https://www.nytimes.com/section/politics?WT.nav=page&action=click&contentCollection=Politics&module=HPMiniNav&pgtype=Homepage&region=TopBar";
+    request(url, function(error, response, html) {
+        if (!error) {
+            var $ = cheerio.load(html);
 
-// url = 'https://newyorktimes.com/';
-url = "https://www.nytimes.com/section/politics?WT.nav=page&action=click&contentCollection=Politics&module=HPMiniNav&pgtype=Homepage&region=TopBar";
-request(url, function(error, response, html) {
-    if (!error) {
-        var $ = cheerio.load(html);
+            /// Gets the div with class 'story-body'
+            var base = $('.highlights .story-body');
+            var articles = [];
 
-        /// Gets the div with class 'story-body'
-        var base = $('.highlights .story-body');
-        var articles = [];
+            for (var j = 0; j < base.length; ++j) {
+                // console.log(j);
+                articles.push({
+                    title: '',
+                    author: '',
+                    summary: ''
+                });
+            }
 
-        for (var j=0; j < base.length; ++j) {
-            // console.log(j);
-            articles.push({
-                title: '',
-                author: '',
-                summary: '',
+            /// Scrape Article Title ///
+            var titleFilter = base.find('h2 > a');
+            titleFilter.each(function(i) {
+                articles[i].title = $(this).text();
+
             });
+
+            /// Scrape Article Author
+            var authorFilter = base.find('.byline > .author');
+
+            authorFilter.each(function(i) {
+                articles[i].author = $(this).text();
+            });
+
+
+            /// Scrape Article Summary
+            var summaryFilter = base.find('p.summary');
+
+            summaryFilter.each(function(i) {
+                articles[i].summary = $(this).text();
+            });
+
+        };
+
+
+        for (j = 0; j < articles.length; j++) {
+
+
+            var idk = new Article(articles[j]);
+            idk.save(function(err, doc) {
+                if (err) {
+                    console.log(err);
+                }
+
+            });
+        };
+
+        res.send("Scrape Complete");
+
+    });
+
+});
+
+
+app.get("/articles", function(req, res) {
+    // Grab every doc in the Articles array
+    Article.find({}, function(error, doc) {
+        // Log any errors
+        if (error) {
+            console.log(error);
+        }
+        // Or send the doc to the browser as a json object
+        else {
+            res.json(doc);
+        }
+    });
+});
+
+app.get("/articles/:id", function(req, res) {
+
+    Article.findOne({ '_id': req.params.id }).exec(function(error, doc) {
+
+        if (error) {
+            console.log(error);
+        }
+        // Or send the doc to the browser as a json object
+        else {
+            res.json(doc);
         }
 
-        // create for loop that is lenght of the base
-        // within loop add empty objects to articles array
-        // push({
-        //     title: '',
-        //     author: '',
-        //     summary: '',
-        // })
-        // 
-        // then 
-
-        /// Scrape Article Title ///
-        var titleFilter = base.find('h2 > a');
-        titleFilter.each(function(i) {
-            articles[i].title = $(this).text();
-
-        });
-
-        /// Scrape Article Author
-        // var authorFilter = base.find('p > span').filter(".author");
-        var authorFilter = base.find('.byline > .author');
-
-        authorFilter.each(function(i) {
-            articles[i].author = $(this).text();
-        });
+    });
 
 
-        /// Scrape Article Summary
-        var summaryFilter = base.find('p.summary');
-
-        summaryFilter.each(function(i) {
-            articles[i].summary = $(this).text();
-        });
-
-    };
-
-    // console.log(articles);
 });
 
 app.listen(port, function() {
     console.log("app connected and firing!");
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
