@@ -9,7 +9,9 @@ const cheerio = require('cheerio');
 
 var Article = require('./schema.js');
 
-
+// app.use(express.path(__dirname + "/public/assets"));
+app.use('/css', express.static(path.join(__dirname, 'public/stylesheets')));
+// app.use('/assets', express.static(path.join(__dirname + '/assets')));
 
 mongoose.connect('mongodb://localhost/NYTarticles');
 var db = mongoose.connection;
@@ -22,7 +24,6 @@ db.once("open", function() {
     console.log("Mongoose connection successful.");
 });
 
-    app.use(express.static('/public'));
 
 //routes
 app.get('/', function(req, res) {
