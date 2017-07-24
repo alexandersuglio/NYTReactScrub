@@ -8,30 +8,12 @@
 </head>
 
 <body>
+<button id="scrape"> SEARCH FOR NEW ARTICLES</button>
     <button id="showIt">CLICK ME Now</button>
     <div id="articlesHere"></div>
 </body>
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-<!-- put logic here -->
 <script src="app.js"></script>
-<script>
-$(document).on("click", "#showIt", function() {
-
-    $('#articlesHere').empty();
-    $.getJSON("/articles", function(data) {
-
-        for (var k = 0; k < data.length; k++) {
-
-            $('#articlesHere').append("<h1>" + data[k].title + "</h1>" + "<p> Written by: " + data[k].author + "<p> <p>Summary: " + data[k].summary + "</p>");
-
-        };
-
-    });
-
-});
-</script>
-<!-- put styling here -->
-<style>
 </style>
 
 </html>

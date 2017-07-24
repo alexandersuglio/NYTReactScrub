@@ -2,16 +2,17 @@ var mongoose = require("mongoose");
 var express = require('express');
 var app = express();
 var port = process.env.port || 3000;
-// var articles = require('./articles.js');
 var path = require('path');
 var request = require('request');
 const cheerio = require('cheerio');
 
+var bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(express.static("public"));
+
 var Article = require('./schema.js');
 
-// app.use(express.path(__dirname + "/public/assets"));
-app.use('/css', express.static(path.join(__dirname, 'public/stylesheets')));
-// app.use('/assets', express.static(path.join(__dirname + '/assets')));
 
 mongoose.connect('mongodb://localhost/NYTarticles');
 var db = mongoose.connection;
@@ -108,16 +109,37 @@ app.get("/articles", function(req, res) {
     });
 });
 
-app.get("/articles/:id", function(req, res) {
 
-    Article.findOne({ '_id': req.params.id }).exec(function(error, doc) {
+app.get('/articles/:id', function(req, res){
+
+Article.findById(req.params.id, function(error, doc){
+
+  if (error) {
+            console.log(error);
+        }
+ else {
+        res.json(doc);
+        }
+
+
+
+
+});
+
+
+});
+
+
+app.get("/articles/delete/:id", function(req, res) {
+
+    Article.findByIdAndRemove(req.params.id, function(error, doc) {
 
         if (error) {
             console.log(error);
         }
         // Or send the doc to the browser as a json object
         else {
-            res.json(doc);
+        res.redirect('/articles');
         }
 
     });
