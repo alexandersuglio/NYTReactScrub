@@ -19,11 +19,21 @@ $.getJSON('/scrape');
 
 });
 
-$('.delete').on('click', '.articleBody', function(){
 
-alert('you clicked delete');
 
-});
+
+
+
+
+
+// $('.delete').on('click', '.articleBody', function(){
+
+// // alert('you clicked delete');
+
+// $.getJSON('/articles/delete/:id');
+
+
+// });
 
 
 

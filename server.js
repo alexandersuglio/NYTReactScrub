@@ -110,42 +110,57 @@ app.get("/articles", function(req, res) {
 });
 
 
-app.get('/articles/:id', function(req, res){
+app.get('/articles/:id', function(req, res) {
 
-Article.findById(req.params.id, function(error, doc){
+    Article.findById(req.params.id, function(error, doc) {
 
-  if (error) {
+        if (error) {
             console.log(error);
-        }
- else {
-        res.json(doc);
+        } else {
+            res.json(doc);
         }
 
 
+
+
+    });
 
 
 });
 
 
-});
+// app.get("/articles/delete/:id", function(req, res) {
 
+//     Article.findByIdAndRemove(req.params.id, function(error, doc) {
 
-app.get("/articles/delete/:id", function(req, res) {
+//         if (error) {
+//             console.log(error);
+//         }
+//         // Or send the doc to the browser as a json object
+//         else {
+//             res.redirect('/articles');
+//         }
 
-    Article.findByIdAndRemove(req.params.id, function(error, doc) {
+//     });
+
+// });
+
+app.delete('/:id', function(req, res) {
+
+    Article.findById(req.params.id, function(error, doc) {
 
         if (error) {
             console.log(error);
         }
         // Or send the doc to the browser as a json object
         else {
-        res.redirect('/articles');
+            res.redirect('/articles');
         }
-
     });
 
 
 });
+
 
 app.listen(port, function() {
     console.log("app connected and firing!");
