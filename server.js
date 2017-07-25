@@ -129,25 +129,9 @@ app.get('/articles/:id', function(req, res) {
 });
 
 
-// app.get("/articles/delete/:id", function(req, res) {
+app.get("/articles/delete/:id", function(req, res) {
 
-//     Article.findByIdAndRemove(req.params.id, function(error, doc) {
-
-//         if (error) {
-//             console.log(error);
-//         }
-//         // Or send the doc to the browser as a json object
-//         else {
-//             res.redirect('/articles');
-//         }
-
-//     });
-
-// });
-
-app.delete('/:id', function(req, res) {
-
-    Article.findById(req.params.id, function(error, doc) {
+    Article.findByIdAndRemove(req.params.id, function(error, doc) {
 
         if (error) {
             console.log(error);
@@ -156,10 +140,27 @@ app.delete('/:id', function(req, res) {
         else {
             res.redirect('/articles');
         }
+
     });
 
-
 });
+
+
+// app.delete('/:id', function(req, res) {
+
+//     Article.findById(req.params.id, function(error, doc) {
+
+//         if (error) {
+//             console.log(error);
+//         }
+//         // Or send the doc to the browser as a json object
+//         else {
+//             res.redirect('/articles');
+//         }
+//     });
+
+
+// });
 
 
 app.listen(port, function() {
