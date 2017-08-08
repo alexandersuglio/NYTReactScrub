@@ -1,7 +1,7 @@
 var mongoose = require("mongoose");
 var express = require('express');
 var app = express();
-var port = process.env.port || 3000;
+var port = process.env.PORT || 3000;
 var path = require('path');
 var request = require('request');
 const cheerio = require('cheerio');
@@ -12,9 +12,19 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
 var Article = require('./schema.js');
+ if (process.env.MONGODB_URI){
+
+    mongoose.connect(process.env.MONGODB_URI);
+ }
+
+else {
 
 
 mongoose.connect('mongodb://localhost/NYTarticles');
+    
+}
+
+
 var db = mongoose.connection;
 
 db.on("error", function(error) {
